@@ -5,9 +5,9 @@ namespace Encore\Admin\Auth\Database;
 use Encore\Admin\Traits\DefaultDatetimeFormat;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 /**
  * Class Administrator.

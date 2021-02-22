@@ -331,17 +331,15 @@ class Form implements Renderable
             return $response;
         }
 
-        DB::transaction(function () {
-            $inserts = $this->prepareInsert($this->updates);
+        $inserts = $this->prepareInsert($this->updates);
 
-            foreach ($inserts as $column => $value) {
-                $this->model->setAttribute($column, $value);
-            }
+        foreach ($inserts as $column => $value) {
+            $this->model->setAttribute($column, $value);
+        }
 
-            $this->model->save();
+        $this->model->save();
 
-            $this->updateRelation($this->relations);
-        });
+        $this->updateRelation($this->relations);
 
         if (($response = $this->callSaved()) instanceof Response) {
             return $response;
@@ -535,18 +533,16 @@ class Form implements Renderable
             return $response;
         }
 
-        DB::transaction(function () {
-            $updates = $this->prepareUpdate($this->updates);
+        $updates = $this->prepareUpdate($this->updates);
 
-            foreach ($updates as $column => $value) {
-                /* @var Model $this ->model */
-                $this->model->setAttribute($column, $value);
-            }
+        foreach ($updates as $column => $value) {
+            /* @var Model $this ->model */
+            $this->model->setAttribute($column, $value);
+        }
 
-            $this->model->save();
+        $this->model->save();
 
-            $this->updateRelation($this->relations);
-        });
+        $this->updateRelation($this->relations);
 
         if (($result = $this->callSaved()) instanceof Response) {
             return $result;

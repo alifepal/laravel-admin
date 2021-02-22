@@ -236,28 +236,26 @@ abstract class Extension
     public static function import()
     {
         $extension = static::getInstance();
-        DB::transaction(function () use ($extension) {
-            if ($menu = $extension->menu()) {
-                if ($extension->validateMenu($menu)) {
-                    extract($menu);
-                    $children = Arr::get($menu, 'children', []);
-                    static::createMenu($title, $path, $icon, 0, $children);
+        if ($menu = $extension->menu()) {
+            if ($extension->validateMenu($menu)) {
+                extract($menu);
+                $children = Arr::get($menu, 'children', []);
+                static::createMenu($title, $path, $icon, 0, $children);
+            }
+        }
+        if ($permission = $extension->permission()) {
+            $name = Arr::get($permission, 'name', null);
+            if (null !== $name) {
+                $permission = [$permission];
+            }
+            foreach ($permission as $item) {
+                if ($extension->validatePermission($item)) {
+                    $method = [];
+                    extract($item);
+                    static::createPermission($name, $slug, implode("\r\n", $path), $method);
                 }
             }
-            if ($permission = $extension->permission()) {
-                $name = Arr::get($permission, 'name', null);
-                if (null !== $name) {
-                    $permission = [$permission];
-                }
-                foreach ($permission as $item) {
-                    if ($extension->validatePermission($item)) {
-                        $method = [];
-                        extract($item);
-                        static::createPermission($name, $slug, implode("\r\n", $path), $method);
-                    }
-                }
-            }
-        });
+        }
     }
 
     /**
