@@ -3,6 +3,7 @@
 namespace Encore\Admin\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 class ExportSeedCommand extends Command
 {
@@ -13,7 +14,7 @@ class ExportSeedCommand extends Command
      */
     protected $signature = 'admin:export-seed {classname=AdminTablesSeeder}
                                               {--users : add to seed users tables}
-                                              {--except-fields=id,created_at,updated_at : except fields}';
+                                              {--except-fields=created_at,updated_at : except fields}';
 
     /**
      * The console command description.
@@ -86,10 +87,14 @@ class ExportSeedCommand extends Command
      */
     protected function getTableDataArrayAsString($table, $exceptFields = [])
     {
-        $fields = \DB::getSchemaBuilder()->getColumnListing($table);
+        $fields = config('admin.database.tables')[$table];
+
         $fields = array_diff($fields, $exceptFields);
 
-        $array = \DB::table($table)->get($fields)->map(function ($item) {
+        $array = \DB::collection($table)->get($fields)->map(function ($item) use($fields) {
+            if(!in_array('_id', $fields)) {
+                unset($item['_id']);
+            }
             return (array) $item;
         })->all();
 
@@ -119,13 +124,14 @@ class ExportSeedCommand extends Command
     protected function varExport($var, $indent = '')
     {
         switch (gettype($var)) {
+            case 'object':
+                return '"'.$var.'"';
 
             case 'string':
                 return '"'.addcslashes($var, "\\\$\"\r\n\t\v\f").'"';
 
             case 'array':
                 $indexed = array_keys($var) === range(0, count($var) - 1);
-
                 $r = [];
 
                 foreach ($var as $key => $value) {

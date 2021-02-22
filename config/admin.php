@@ -116,7 +116,7 @@ return [
 
         'guards' => [
             'admin' => [
-                'driver'   => 'session',
+                'driver' => 'session',
                 'provider' => 'admin',
             ],
         ],
@@ -124,7 +124,7 @@ return [
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
-                'model'  => Encore\Admin\Auth\Database\Administrator::class,
+                'model' => Encore\Admin\Auth\Database\Administrator::class,
             ],
         ],
 
@@ -158,7 +158,7 @@ return [
         // Image and file upload path under the disk above.
         'directory' => [
             'image' => 'images',
-            'file'  => 'files',
+            'file' => 'files',
         ],
     ],
 
@@ -192,11 +192,62 @@ return [
         'menu_model' => Encore\Admin\Auth\Database\Menu::class,
 
         // Pivot table for table above.
-        'operation_log_table'    => 'admin_operation_log',
+        'operation_log_table' => 'admin_operation_log',
         'user_permissions_table' => 'admin_user_permissions',
-        'role_users_table'       => 'admin_role_users',
+        'role_users_table' => 'admin_role_users',
         'role_permissions_table' => 'admin_role_permissions',
-        'role_menu_table'        => 'admin_role_menu',
+        'role_menu_table' => 'admin_role_menu',
+
+        'tables' => [
+            'admin_users' => [
+                'username',
+                'password',
+                'name',
+                'avatar',
+                'remember_token'
+            ],
+            'admin_roles' => [
+                'name',
+                'slug'
+            ],
+            'admin_permissions' => [
+                'name',
+                'slug',
+                'http_method',
+                'http_path',
+            ],
+            'admin_menu' => [
+                '_id',
+                'parent_id',
+                'order',
+                'title',
+                'icon',
+                'uri',
+                'permission'
+            ],
+            'admin_operation_log' => [
+                'id',
+                'user_id',
+                'path',
+                'method',
+                'ip',
+                'input',
+                'user_id',
+            ],
+            'admin_user_permissions' => [
+                'user_id',
+                'permission_id'
+            ],
+            'admin_role_users' => [
+                'role_id', 'user_id',
+            ],
+            'admin_role_permissions' => [
+                'role_id', 'permission_id',
+            ],
+            'admin_role_menu' => [
+                'role_id', 'menu_id'
+            ],
+        ]
     ],
 
     /*
@@ -239,7 +290,7 @@ return [
     | Indicates whether to check menu roles.
     |--------------------------------------------------------------------------
     */
-    'check_menu_roles'       => true,
+    'check_menu_roles' => true,
 
     /*
     |--------------------------------------------------------------------------

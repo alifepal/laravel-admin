@@ -4,9 +4,9 @@ namespace Encore\Admin\Auth\Database;
 
 use Encore\Admin\Traits\DefaultDatetimeFormat;
 use Encore\Admin\Traits\ModelTree;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 /**
  * Class Menu.
@@ -65,9 +65,6 @@ class Menu extends Model
     public function allNodes(): array
     {
         $connection = config('admin.database.connection') ?: config('database.default');
-        $orderColumn = DB::connection($connection)->getQueryGrammar()->wrap($this->orderColumn);
-
-        $byOrder = 'ROOT ASC,'.$orderColumn;
 
         $query = static::query();
 
@@ -75,7 +72,22 @@ class Menu extends Model
             $query->with('roles');
         }
 
-        return $query->selectRaw('*, '.$orderColumn.' ROOT')->orderByRaw($byOrder)->get()->toArray();
+        $query = $query->whereRaw(['parent_id' => ['$eq' => null]])->get();
+
+        $menu = [];
+
+        foreach ($query->toArray() as $item) {
+            $item['parent_id'] = 0;
+            $submenu = static::query()->where('parent_id', $item['_id'])->get();
+
+            if(count($submenu) > 0) {
+                $item['children'] = $submenu->toArray();
+            }
+
+            $menu[] = $item;
+        }
+
+        return $menu;
     }
 
     /**
