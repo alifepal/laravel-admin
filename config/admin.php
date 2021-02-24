@@ -197,57 +197,6 @@ return [
         'role_users_table' => 'admin_role_users',
         'role_permissions_table' => 'admin_role_permissions',
         'role_menu_table' => 'admin_role_menu',
-
-        'tables' => [
-            'admin_users' => [
-                'username',
-                'password',
-                'name',
-                'avatar',
-                'remember_token'
-            ],
-            'admin_roles' => [
-                'name',
-                'slug'
-            ],
-            'admin_permissions' => [
-                'name',
-                'slug',
-                'http_method',
-                'http_path',
-            ],
-            'admin_menu' => [
-                '_id',
-                'parent_id',
-                'order',
-                'title',
-                'icon',
-                'uri',
-                'permission'
-            ],
-            'admin_operation_log' => [
-                'id',
-                'user_id',
-                'path',
-                'method',
-                'ip',
-                'input',
-                'user_id',
-            ],
-            'admin_user_permissions' => [
-                'user_id',
-                'permission_id'
-            ],
-            'admin_role_users' => [
-                'role_id', 'user_id',
-            ],
-            'admin_role_permissions' => [
-                'role_id', 'permission_id',
-            ],
-            'admin_role_menu' => [
-                'role_id', 'menu_id'
-            ],
-        ]
     ],
 
     /*
