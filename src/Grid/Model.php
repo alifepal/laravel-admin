@@ -295,7 +295,11 @@ class Model
     public function buildData($toArray = true)
     {
         if (empty($this->data)) {
-            $collection = $this->get();
+            if (property_exists($this->originalModel, 'allRelations') && is_array($this->originalModel->allRelations)) {
+                $collection = $this->with($this->originalModel->allRelations)->get();
+            } else {
+                $collection = $this->get();
+            }
 
             if ($this->collectionCallback) {
                 $collection = call_user_func($this->collectionCallback, $collection);
