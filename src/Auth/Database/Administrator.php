@@ -21,6 +21,7 @@ class Administrator extends Model implements AuthenticatableContract
     use DefaultDatetimeFormat;
 
     protected $fillable = ['username', 'password', 'name', 'avatar'];
+    public $allRelations = ['roles', 'permissions'];
 
     /**
      * Create a new Eloquent model instance.
