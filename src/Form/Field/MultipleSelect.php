@@ -72,7 +72,8 @@ class MultipleSelect extends Select
         // MultipleSelect value store as an ont-to-many relationship.
         } elseif (is_array($first)) {
             foreach ($relations as $relation) {
-                $this->value[] = Arr::get($relation, "pivot.{$this->getOtherKey()}");
+                $this->value[] = Arr::get($relation, "_id");
+//                 $this->value[] = Arr::get($relation, "pivot.{$this->getOtherKey()}");
             }
 
             // MultipleSelect value store as a column.
