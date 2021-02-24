@@ -11,6 +11,7 @@ class Role extends Model
     use DefaultDatetimeFormat;
 
     protected $fillable = ['name', 'slug'];
+    public $allRelations = ['permissions'];
 
     /**
      * Create a new Eloquent model instance.
