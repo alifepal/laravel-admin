@@ -111,7 +111,7 @@ class Filter implements Renderable
     /**
      * @var bool
      */
-    public $expand = false;
+    public $expand = true;
 
     /**
      * @var Collection
